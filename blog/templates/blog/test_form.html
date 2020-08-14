@@ -1,0 +1,85 @@
+{% extends 'main.html' %}
+
+{% load static %}
+
+{% block active %}
+<li><a href="{% url 'home' %}">Home</a></li>
+<li><a href="#{% url 'fashion' %}">Fashion</a></li>
+<li class="colorlib-active"><a href="#{% url 'travel' %}">Travel</a></li>
+<li><a href="#{% url 'about' %}">About</a></li>
+<li><a href="{% url 'contact' %}">Contact</a></li>
+{% endblock active %}
+
+
+{% block content %}
+
+<a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
+
+{% for comment in post.comments.all %}
+<ul class="comment-list">
+    <li class="comment">
+        <div class="vcard bio">
+            <img src="{% static 'blog/images/person_1.jpg' %}" alt="Image placeholder">
+        </div>
+        <div class="comment-body">
+            <h3>{{ comment.author }}</h3>
+            <div class="meta">{{ comment.date_added }}</div>
+            <p>{{ comment.text }}</p>
+            <p><a href="#" class="reply">Reply</a></p>
+        </div>
+    </li>
+</ul>
+{% endfor %}
+
+{% for comment in post.comments.all %}
+{% if user.is_authenticated or comment.approved_comment %}
+<div class="comment">
+    <div class="date">
+        {{ comment.created_date }}
+        {% if not comment.approved_comment %}
+        <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><span
+                class="glyphicon glyphicon-remove"></span></a>
+        <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}"><span
+                class="glyphicon glyphicon-ok"></span></a>
+        {% endif %}
+    </div>
+    <strong>{{ comment.author }}</strong>
+    <p>{{ comment.text|linebreaks }}</p>
+</div>
+{% endif %}
+{% empty %}
+<p>No comments here yet :(</p>
+{% endfor %}
+
+<!--
+<div class="comment-form-wrap pt-5">
+    <h3 class="mb-5">Leave a comment</h3>
+    <form action="{% url 'post_detail' post.pk %}" class="p-3 p-md-5 bg-light" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Name *</label>
+            <input type="text" class="form-control" name="name" id="name">
+        </div>
+        <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" class="form-control" name="email" id="email">
+        </div>
+        <div class="form-group">
+            <label for="website">Website</label>
+            <input type="url" class="form-control" name="website" id="website">
+        </div>
+
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" cols="30" rows="10" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Post Comment" class="btn py-3 px-4 btn-primary">
+        </div>
+
+    </form>
+</div>
+-->
+
+
+{% endblock content %}

@@ -1,0 +1,65 @@
+<div class="row d-flex">
+    <div class="col-xl-8 py-5 px-md-5">
+        <div class="row pt-md-4">
+            <div class="col-md-12">
+                <div class="blog-entry ftco-animate d-md-flex">
+                    <a href="{% url 'single' %}" class="img img-2"
+                        style="background-image: url({% static 'blog/images/image_1.jpg' %});"></a>
+                    <div class="text text-2 pl-md-4">
+                        <h3 class="mb-2"><a href="{% url 'single' %}">A Loving Heart is the Truest Wisdom</a></h3>
+                        <div class="meta-wrap">
+                            <p class="meta">
+                                <span><i class="icon-calendar mr-2"></i>June 28, 2019</span>
+                                <span><a href="{% url 'single' %}"><i class="icon-folder-o mr-2"></i>Travel</a></span>
+                                <span><i class="icon-comment2 mr-2"></i>5 Comment</span>
+                            </p>
+                        </div>
+                        <p class="mb-4">A small river named Duden flows by their place and supplies it with the
+                            necessary regelialia.</p>
+                        <p><a href="#" class="btn-custom">Read More <span class="ion-ios-arrow-forward"></span></a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="comment-form-wrap pt-5">
+    <form action="#" class="p-3 p-md-5 bg-light" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="hidden" class="form-control" name="comment_id" id="{{ comment.id }}">
+        </div>
+        <div class="form-group">
+            <label for="name">Name *</label>
+            <input type="text" class="form-control" name="name" id="name">
+        </div>
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" cols="30" rows="10" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn py-3 px-4 btn-primary">
+        </div>
+    </form>
+</div>
+
+
+
+
+<ul class="comment-list">
+    <li class="comment">
+        <div class="comment-body">
+            {% for reply in comment.replies.all %}
+            <div class="comment-body">
+                <h3>{{ reply.author }}</h3>
+                <div class="meta">{{ reply.created_date }}</div>
+                <p>{{ reply.text|linebreaks }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <p><a href="{% url 'add_reply_to_comment' post.pk %}" class="reply">Reply</a></p>
+    </li>
+</ul>

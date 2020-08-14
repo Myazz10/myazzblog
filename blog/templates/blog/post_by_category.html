@@ -1,0 +1,173 @@
+{% extends 'main.html' %}
+
+{% load static %}
+
+{% block active %}
+<li class="colorlib-active"><a href="{% url 'home' %}">Home</a></li>
+<li><a href="#{% url 'fashion' %}">Fashion</a></li>
+<li><a href="#{% url 'travel' %}">Travel</a></li>
+<li><a href="#{% url 'about' %}">About</a></li>
+<li><a href="{% url 'contact' %}">Contact</a></li>
+{% endblock active %}
+
+
+{% block content %}
+<div class="row d-flex">
+    <div class="col-xl-8 py-5 px-md-5">
+        <h3 style="text-decoration: underline;">{{ category_tags.name|title }} Category</h3>
+        <!-- Tester to import data from the database into this template... STARTING POINT -->
+        {% for post in posts %}
+        <div class="row pt-md-4">
+            <div class="col-md-12">
+                <div class="blog-entry ftco-animate d-md-flex">
+                    <a href="{% url 'post_detail' post.pk %}" class="img img-2"
+                        style="background-image: url({{ post.intro_picture.url }});"></a>
+                    <div class="text text-2 pl-md-4">
+                        <h3 class="mb-2"><a href="{% url 'post_detail' post.pk %}">{{ post.title|title }}</a></h3>
+                        <div class="meta-wrap">
+                            <p class="meta">
+                                <span><i class="icon-calendar mr-2"></i>{{ post.published_date|date:"F d, Y" }}</span>
+                                <!-- I will place the published date here... -->
+                                <span><a href="#"><i
+                                            class="icon-folder-o mr-2"></i>{{ post.category_tags|title }}</a></span>
+                                <span><i class="icon-comment2 mr-2"></i>{{ post.approved_comments.count }}
+                                    Comments</span>
+                                <span><i class="icon-eye mr-2"></i>{{ post.view_count }}</span>
+                            </p>
+                        </div>
+                        <p class="mb-4">{{ post.intro_content|truncatewords:30 }}</p>
+                        <p><a href="{% url 'post_detail' post.pk %}" class="btn-custom">Read More <span
+                                    class="ion-ios-arrow-forward"></span></a></p>
+                    </div>
+                </div>
+            </div>
+        </div><!-- END -->
+        {% endfor %}
+        <!-- Tester to import data from the database into this template... ENDING POINT  -->
+
+        <div class="row">
+            <div class="col">
+                <div class="block-27">
+                    <ul>
+                        {% if is_paginated %}
+
+                        {% if page_obj.has_previous %}
+                        <li><a href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+
+                        {% if page_obj.number == num %}
+                        <li class="active"><a href="?page={{ num }}">{{ num }}</a></li>
+                        {% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %}
+                        <li><a href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                        <li><a href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+                        {% endif %}
+
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 sidebar ftco-animate bg-light pt-5">
+        <!--<div class="sidebar-box pt-md-4">
+            <form action="#" class="search-form">
+                <div class="form-group">
+                    <span class="icon icon-search"></span>
+                    <input type="text" class="form-control" placeholder="Type a keyword and hit enter">
+                </div>
+            </form>
+        </div>-->
+
+
+        <div class="sidebar-box ftco-animate">
+            <h3 class="sidebar-heading">Categories</h3>
+            <ul class="categories">
+                {% for category, related_amount in categories.items %}
+
+                <!-- related_amount.0 will give access to the first index in the related amount value list... related_amount.1 relatively.. -->
+                {%if related_amount.0 >= 1%}
+                <li><a
+                        href="{% url 'post_by_category' related_amount.1 %}">{{ category }}<span>({{ related_amount.0 }})</span></a>
+                </li>
+                {% endif %}
+
+                {% endfor %}
+            </ul>
+        </div>
+
+
+        <div class="sidebar-box ftco-animate">
+            <h3 class="sidebar-heading">Popular Articles</h3>
+            {% for post, post_items in popular_articles.items %}
+            <div class="block-21 mb-4 d-flex">
+                <a class="blog-img mr-4" style="background-image: url({{ post_items.1.url }});"></a>
+                <div class="text">
+                    <h3 class="heading"><a href="{% url 'post_detail' post_items.0 %}">{{ post|title }}</a></h3>
+                    <div class="meta">
+
+                        <div><a href="#"><span class="icon-calendar"></span> {{ post_items.4|date:"F d, Y" }}</a>
+                        </div>
+                        <div><a href="#"><span class="icon-person"></span> {{ post_items.3.first_name|title }}
+                                {{ post_items.3.last_name|title }}</a></div>
+                        <div><a href="{% url 'post_detail' post_items.0 %}"><span class="icon-chat"></span>
+                                {{ post_items.2.count }}</a></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- I will have to sort out the tag cloud sometimes after... but for now amma skip pass it -->
+        <!-- <div class="sidebar-box ftco-animate">
+            <h3 class="sidebar-heading">Tag Cloud</h3>
+            <ul class="tagcloud">
+                <a href="#" class="tag-cloud-link">animals</a>
+                <a href="#" class="tag-cloud-link">human</a>
+                <a href="#" class="tag-cloud-link">people</a>
+                <a href="#" class="tag-cloud-link">cat</a>
+                <a href="#" class="tag-cloud-link">dog</a>
+                <a href="#" class="tag-cloud-link">nature</a>
+                <a href="#" class="tag-cloud-link">leaves</a>
+                <a href="#" class="tag-cloud-link">food</a>
+            </ul>
+        </div> -->
+
+        <div class="sidebar-box subs-wrap img py-4" style="background-image: url({% static 'blog/images/bg_1.jpg' %});">
+            <div class="overlay"></div>
+            <h3 class="mb-4 sidebar-heading">Newsletter</h3>
+            <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia</p>
+            <form action="#" class="subscribe-form">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Email Address">
+                    <input type="submit" value="Subscribe" class="mt-2 btn btn-white submit">
+                </div>
+            </form>
+        </div>
+
+        <!-- <div class="sidebar-box ftco-animate">
+            <h3 class="sidebar-heading">Archives</h3>
+            <ul class="categories">
+                <li><a href="#">Decob14 2018 <span>(10)</span></a></li>
+                <li><a href="#">September 2018 <span>(6)</span></a></li>
+                <li><a href="#">August 2018 <span>(8)</span></a></li>
+                <li><a href="#">July 2018 <span>(2)</span></a></li>
+                <li><a href="#">June 2018 <span>(7)</span></a></li>
+                <li><a href="#">May 2018 <span>(5)</span></a></li>
+            </ul>
+        </div> -->
+
+        <div class="sidebar-box ftco-animate">
+            <h3 class="sidebar-heading">Blog Site Successful!</h3>
+            <p>Using Python Django Framework to help this website to be fully functional and ready to be used for
+                production level...</p>
+        </div>
+    </div><!-- END COL -->
+</div>
+{% endblock content %}
