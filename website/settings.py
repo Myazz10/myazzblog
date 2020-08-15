@@ -19,7 +19,7 @@ DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
 
-ALLOWED_HOSTS = ['https://myazzblog.herokuapp.com/']
+ALLOWED_HOSTS = ['https://moiblog.herokuapp.com/']
 
 
 # Application definition
