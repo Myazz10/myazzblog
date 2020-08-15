@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='comment',
             name='comment_id',
-            field=models.IntegerField(default='', null=True),
+            field=models.IntegerField(default=0, null=True),
         ),
     ]
