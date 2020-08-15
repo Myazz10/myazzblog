@@ -40,10 +40,10 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     intro_content = models.TextField(null=True)
     intro_picture = models.ImageField(
-        upload_to='blog_post_images', default='default.png')
+        upload_to='blog_post_images', default='default.jpg')
     content = models.TextField(null=True)
     picture = models.ImageField(
-        upload_to='blog_post_images', default='default.png')
+        upload_to='blog_post_images', default='default.jpg')
     #category_tags = models.CharField(max_length=20, choices=CATEGORY_CHOICES, null=True)
     category_tags = models.ForeignKey(
         Category, on_delete=models.CASCADE, null=True, related_name='category')

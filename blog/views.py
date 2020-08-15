@@ -291,7 +291,7 @@ def add_reply_to_comment(request, pk=None):
         comment.post_id = post.pk
         comment.author = request.POST.get('name')
         comment.text = request.POST.get('message')
-        reply_id = request.POST.get('comment_id')
+        reply_id = request.POST['comment_id']
         comment_qs = None
         if reply_id:
             comment_qs = Comment.objects.get(id=reply_id)
