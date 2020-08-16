@@ -4,8 +4,8 @@
 
 {% block active %}
 <li class="colorlib-active"><a href="{% url 'home' %}">Home</a></li>
-<li><a href="#{% url 'fashion' %}">Fashion</a></li>
-<li><a href="#{% url 'travel' %}">Travel</a></li>
+<li><a href="{% url 'fashion' %}">Fashion</a></li>
+<li><a href="{% url 'travel' %}">Travel</a></li>
 <li><a href="{% url 'about' %}">About</a></li>
 <li><a href="{% url 'contact' %}">Contact</a></li>
 {% endblock active %}
