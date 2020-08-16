@@ -357,9 +357,9 @@ def contact(request):
         )
 
         context = {
-
+            'name': name,
         }
-        return redirect('contact')
+        return render(request, 'blog/contact.html', context)
     else:
         context = {
 

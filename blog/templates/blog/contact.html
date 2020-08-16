@@ -13,6 +13,7 @@
 
 
 {% block content %}
+
 <section class="ftco-section contact-section px-md-4">
 	<div class="container">
 		<div class="row d-flex mb-5 contact-info">
@@ -41,6 +42,13 @@
 				</div>
 			</div>
 		</div>
+
+		{% if name %}
+
+		<h3 class="mb-5 mt-5">Hey {{ name|title }}, we have received your email... We will contact you shortly!</h3>
+
+		{% else %}
+
 		<div class="row block-9">
 			<div class="col-lg-6 d-flex">
 				<form action="{% url 'contact' %}" class="bg-light p-5 contact-form" method="POST">
@@ -67,6 +75,10 @@
 				<div id="map" class="bg-light"></div>
 			</div>
 		</div>
+
+		{% endif %}
 	</div>
 </section>
+
+
 {% endblock content %}
