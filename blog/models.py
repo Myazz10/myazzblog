@@ -49,7 +49,7 @@ class Post(models.Model):
         Category, on_delete=models.CASCADE, null=True, related_name='category')
     soft_tags = MultiSelectField(choices=OTHER_CHOICES, null=True)
     published_date = models.DateTimeField(default=timezone.now)
-    hyperlink = models.URLField(null=True)
+    photo_by = models.CharField(max_length=255, null=True)
 
     # To check the amount of views the post received...
     # Editable will remove the option to edit if from the admin section...
