@@ -4,8 +4,8 @@
 
 {% block active %}
 <li class="colorlib-active"><a href="{% url 'home' %}">Home</a></li>
-<li><a href="{% url 'fashion' %}">Fashion</a></li>
-<li><a href="{% url 'travel' %}">Travel</a></li>
+<li><a href="#{% url 'fashion' %}">Fashion</a></li>
+<li><a href="{% url 'travel' %}">OT View</a></li>
 <li><a href="{% url 'about' %}">About</a></li>
 <li><a href="{% url 'contact' %}">Contact</a></li>
 {% endblock active %}
@@ -24,6 +24,7 @@
                         style="background-image: url({{ post.intro_picture.url }});"></a>
                     <div class="text text-2 pl-md-4">
                         <h3 class="mb-2"><a href="{% url 'post_detail' post.pk %}">{{ post.title|title }}</a></h3>
+                        <hr>
                         <div class="meta-wrap">
                             <p class="meta">
                                 <span><i class="icon-calendar mr-2"></i>{{ post.published_date|date:"F d, Y" }}</span>
@@ -109,7 +110,9 @@
             <div class="block-21 mb-4 d-flex">
                 <a class="blog-img mr-4" style="background-image: url({{ post_items.1.url }});"></a>
                 <div class="text">
-                    <h3 class="heading"><a href="{% url 'post_detail' post_items.0 %}">{{ post|title }}</a></h3>
+                    <h3 class="heading"><a
+                            href="{% url 'post_detail' post_items.0 %}">{{ post|title|truncatewords:10 }}</a>
+                    </h3>
                     <div class="meta">
 
                         <div><a href="#"><span class="icon-calendar"></span> {{ post_items.4|date:"F d, Y" }}</a>

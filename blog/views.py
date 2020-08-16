@@ -395,3 +395,76 @@ def travel(request):
     }
 
     return render(request, template, context)
+
+
+class TravelView(ListView):
+    model = Post
+    template_name = 'blog/travel.html'
+    ordering = ['-published_date']
+    context_object_name = 'posts'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        post_items = Post.objects.all()
+        # archive_dates = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        # archive_dates = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+        popular_article = Popular_Article.objects.order_by('-date_added')
+        popular_dict = {}
+
+        category = {'Food': [0, 0], 'Fashion': [0, 0], 'Travel': [0, 0], 'Technology': [0, 0], 'Photography': [
+            0, 0], 'Sports': [0, 0], 'Weather': [0, 0], 'News': [0, 0], 'Nature': [0, 0], 'Movies': [0, 0], 'Anime': [0, 0]}
+
+        # After getting the objects for my Post model... I'll try and draw the category counters for each category
+        # and assign them to the context variable so I can use them in the template to display category details...
+        # Note: {'Food' - Category Tag, Index [0] - Post by Category amount & Index [1] - Category ID/PK}
+
+        for item in post_items:
+            if item.category_tags.name == 'Food':
+                category['Food'][0] += 1
+                category['Food'][1] = item.category_tags.pk
+            elif item.category_tags.name == 'Weather':
+                category['Weather'][0] += 1
+                category['Weather'][1] = item.category_tags.pk
+            elif item.category_tags.name == 'News':
+                category['News'][0] += 1
+                category['News'][1] = item.category_tags.pk
+            elif item.category_tags.name == 'Nature':
+                category['Nature'][0] += 1
+                category['Nature'][1] = item.category_tags.pk
+            elif item.category_tags.name == 'Movies':
+                category['Movies'][0] += 1
+                category['Movies'][1] = item.category_tags.pk
+            elif item.category_tags.name == 'Anime':
+                category['Anime'][0] += 1
+                category['Anime'][1] = item.category_tags.pk
+            elif item.category_tags.name == 'Sports':
+                category['Sports'][0] += 1
+                category['Sports'][1] = item.category_tags.pk
+            elif item.category_tags.name == 'Travel':
+                category['Travel'][0] += 1
+                category['Travel'][1] = item.category_tags.pk
+            elif item.category_tags.name == 'Fashion':
+                category['Fashion'][0] += 1
+                category['Fashion'][1] = item.category_tags.pk
+            elif item.category_tags.name == 'Technology':
+                category['Technology'][0] += 1
+                category['Technology'][1] = item.category_tags.pk
+            elif item.category_tags.name == 'Photography':
+                category['Photography'][0] += 1
+                category['Photography'][1] = item.category_tags.pk
+            else:
+                pass
+
+        # Popular Articles...
+        for post in popular_article:
+            # Key: Title ---> Value[0: ID/PK, 1: Intro Picture, 2: Number of Comments, 3: Author, 4: Published Date]
+            popular_dict[post.popular_post.title] = [post.popular_post.pk, post.popular_post.intro_picture,
+                                                     post.popular_post.approved_comments, post.popular_post.author, post.popular_post.published_date]
+
+            # Adding categories and the amount of category related post to the context variable...
+        context['categories'] = category
+        context['popular_articles'] = popular_dict
+
+        return context

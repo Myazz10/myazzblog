@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import HomeView, PostDetailView, PostByCategory
+from .views import HomeView, PostDetailView, PostByCategory, TravelView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -17,7 +17,7 @@ urlpatterns = [
          name='add_reply_to_comment'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
-    path('travel/', views.travel, name='travel'),
+    path('travel/', TravelView.as_view(), name='travel'),
     path('single/', views.single, name='single'),
     path('fashion/', views.fashion, name='fashion'),
     path('newsletter/', views.news_letter, name='news-letter'),
